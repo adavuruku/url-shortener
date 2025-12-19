@@ -1,3 +1,50 @@
 spring:
   application:
     name: url-shortener
+  server:
+    port=9090
+
+  short-url:
+    expiry-minutes: 60
+    max-create-retry: 5
+    thread-config:
+      core-pool-size: 5
+      max-pool-size: 10
+      que-capacity: 100
+
+  datasource:
+    url: jdbc:postgresql://postgres:5432/url_shortener
+    username: root
+    password: password
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: true
+
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+    baseline-on-migrate: true
+
+  data:
+    redis:
+      host: localhost
+      port: 6379
+      timeout: 2s
+
+  cache:
+    type: redis
+    redis:
+      time-to-live: 10m
+      cache-null-values: false
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
