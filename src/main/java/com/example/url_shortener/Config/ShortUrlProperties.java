@@ -41,7 +41,7 @@ public class ShortUrlProperties {
     public static class ThreadConfig {
         private long corePoolSize;
         private long maxPoolSize;
-        private long queCapacity;
+        private long queueCapacity;
 
         public long getMaxPoolSize() {
             return maxPoolSize;
@@ -59,14 +59,16 @@ public class ShortUrlProperties {
             this.corePoolSize = corePoolSize;
         }
 
-        public long getQueCapacity() {
-            return queCapacity;
+        public long getQueueCapacity() {
+            return queueCapacity;
         }
 
-        public void setQueCapacity(long queCapacity) {
-            this.queCapacity = queCapacity;
+        public void setQueueCapacity(long queueCapacity) {
+            this.queueCapacity = queueCapacity;
         }
+    }
 
-
+    public static class CacheConfig {
+        private long corePoolSize;
     }
 }

@@ -6,7 +6,6 @@ import com.example.url_shortener.Data.Repository.IURLMappingRepository;
 import com.example.url_shortener.Exceptions.CodeExpiredException;
 import com.example.url_shortener.Exceptions.FailledToCompleteOperationException;
 import com.example.url_shortener.Exceptions.NotFoundException;
-import com.example.url_shortener.Exceptions.RemoteServerException;
 import com.example.url_shortener.Services.Interface.IUrlMappingService;
 import com.example.url_shortener.Utils.Base62CodeGenerator;
 import io.micrometer.core.instrument.Counter;
@@ -16,7 +15,11 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.ApplicationContext;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.retry.annotation.Backoff;
+import org.springframework.retry.annotation.Recover;
+import org.springframework.retry.annotation.Retryable;
 import org.springframework.scheduling.annotation.Async;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
@@ -25,6 +28,7 @@ import java.time.temporal.ChronoUnit;
 /**
  * Created by Sherif.Abdulraheem 12/19/2025 - 2:41 PM
  **/
+@Service
 public class UrlMappingService implements IUrlMappingService {
 
     private final IURLMappingRepository repository;
@@ -47,6 +51,10 @@ public class UrlMappingService implements IUrlMappingService {
                 registry.counter("shortener_redirect_total");
     }
 
+    /**
+     * increment hit count on code
+     * @param code
+     */
     @Override
     @Modifying
     @Transactional
@@ -57,31 +65,42 @@ public class UrlMappingService implements IUrlMappingService {
     }
 
 
+    /**
+     * Resolve short code to long URL
+     * @param code
+     * @return
+     */
     @Override
     public String resolveLongUrl(String code) {
         UrlMapping mapping = getURlMetadataByCode(code);
-        return mapping.getLongUrl();
+        String url = mapping.getLongUrl();
+        return url;
     }
 
-
-    @Override
-    public UrlMapping create(String longUrl) {
-        return repository.findByLongUrl(longUrl)
-                .orElseGet(() -> createNew(longUrl));
-    }
-
+    /**
+     * Generate url meta data
+     *
+     * @param code
+     * @return
+     */
 
     @Override
     public UrlMapping generateUrlMetaData(String code){
-        return getURlMetadataByCode(code);
+       return getURlMetadataByCode(code);
     }
 
 
+    /**
+     * Method to fetch url mapping.
+     * @param code
+     * @return UrlMapping
+     */
     @Cacheable(
             cacheNames = "urlByCode",
-            key = "#code"
+            key = "#code",
+            unless = "#result.expiresAt != null && #result.expiresAt.isBefore(T(java.time.Instant).now())"
     )
-    private UrlMapping getURlMetadataByCode(String code){
+    public UrlMapping getURlMetadataByCode(String code){
         UrlMapping mapping = repository.findByCode(code)
                 .orElseThrow(() -> new NotFoundException(new Object[]{code}));
         if (mapping.getExpiresAt() != null &&
@@ -96,41 +115,69 @@ public class UrlMappingService implements IUrlMappingService {
         return mapping;
     }
 
-    @Modifying
-    @Transactional
-    public UrlMapping createNew(String longUrl) {
 
-        for (int attempt = 1; attempt <= properties.getMaxCreateRetry(); attempt++) {
-            try {
-                UrlMapping mapping = new UrlMapping();
-                mapping.setCode(generator.generate());
-                mapping.setLongUrl(longUrl);
-                mapping.setCreatedAt(Instant.now());
-
-                long expiryMinutes = properties.getExpiryMinutes();
-                if (expiryMinutes > 0) {
-                    mapping.setExpiresAt(
-                            mapping.getCreatedAt().plus(expiryMinutes, ChronoUnit.MINUTES)
-                    );
-                }
-
-                return repository.save(mapping);
-
-            } catch (DataIntegrityViolationException ex) {
-                if (attempt == properties.getMaxCreateRetry()) {
-                    throw new FailledToCompleteOperationException(new Object[]{properties.getMaxCreateRetry()});
-                }
-            }catch (Exception e){
-                //log message
-                throw new RemoteServerException(new Object[]{});
-            }
-        }
-        throw new RemoteServerException(new Object[]{});
+    /**
+     * Create new shorten url
+     * @param longUrl
+     * @return created UrlMapping
+     */
+    @Retryable(
+            retryFor = DataIntegrityViolationException.class,
+            maxAttemptsExpression = "#{@shortUrlProperties.maxCreateRetry}",
+            backoff = @Backoff(delay = 50)
+    )
+    @Override
+    public UrlMapping create(String longUrl) {
+        return repository.findByLongUrl(longUrl)
+                .orElseGet(() ->  createUrlMapping(longUrl));
     }
 
 
+    /**
+     * create new urlMapping
+     * @param longUrl
+     * @return
+     */
+    @Transactional
+    public UrlMapping createUrlMapping(String longUrl) {
+            UrlMapping mapping = new UrlMapping();
+            mapping.setCode(generator.generate());
+            mapping.setLongUrl(longUrl);
+            mapping.setCreatedAt(Instant.now());
+
+            long expiryMinutes = properties.getExpiryMinutes();
+            if (expiryMinutes > 0) {
+                mapping.setExpiresAt(
+                        mapping.getCreatedAt().plus(expiryMinutes, ChronoUnit.MINUTES)
+                );
+            }
+
+            return repository.save(mapping);
+    }
+
+    /**
+     * Retry recovery method.
+     *
+     * @param ex
+     * @param longUrl
+     * @return
+     */
+    @Recover
+    public UrlMapping recover(DataIntegrityViolationException ex, String longUrl) {
+        throw new FailledToCompleteOperationException(
+                new Object[]{properties.getMaxCreateRetry()}
+        );
+    }
+
+
+    /**
+     * Delete expired short url from db and cache
+     *
+     * @param code
+     */
     @CacheEvict(cacheNames = "urlByCode", key = "#code")
     @Async("taskExecutor")
+    @Transactional
     public void delete(String code) {
         repository.deleteByCode(code);
     }

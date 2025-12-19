@@ -9,6 +9,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import java.net.URI;
 import java.util.*;
 
 /**
@@ -17,6 +18,7 @@ import java.util.*;
 @RestControllerAdvice
 public class APIAdvice {
 
+    private final String ERROR_PATH = "https://api.example.com/problems/";
     private final MessageSource messageSource;
 
     public APIAdvice(MessageSource messageSource) {
@@ -29,6 +31,7 @@ public class APIAdvice {
         var message = messageSource.getMessage(messageKey, ex.getArgs(),
                 LocaleContextHolder.getLocale());
         var problem= ProblemDetail.forStatus(ex.getHttpStatus());
+        problem.setType(URI.create(ERROR_PATH+messageKey));
         problem.setTitle(message);
         problem.setDetail(message);
         problem.setStatus(ex.getHttpStatus());
@@ -42,6 +45,7 @@ public class APIAdvice {
                 LocaleContextHolder.getLocale());
 
         var problem = ProblemDetail.forStatus(ex.getHttpStatus());
+        problem.setType(URI.create(ERROR_PATH+ messageKey));
         problem.setTitle(message);
         problem.setDetail(message);
         problem.setStatus(ex.getHttpStatus());
@@ -55,6 +59,22 @@ public class APIAdvice {
                 LocaleContextHolder.getLocale());
 
         var problem = ProblemDetail.forStatus(ex.getHttpStatus());
+        problem.setType(URI.create(ERROR_PATH + messageKey));
+        problem.setTitle(message);
+        problem.setDetail(message);
+        problem.setStatus(ex.getHttpStatus());
+        return problem;
+    }
+
+
+    @ExceptionHandler(RemoteServerException.class)
+    ProblemDetail validation(RemoteServerException ex) {
+        var messageKey = Objects.isNull(ex.getMessage()) ? MessageResourceConstants.REMOTE_ERROR : ex.getMessage();
+        var message = messageSource.getMessage(messageKey, ex.getArgs(),
+                LocaleContextHolder.getLocale());
+
+        var problem = ProblemDetail.forStatus(ex.getHttpStatus());
+        problem.setType(URI.create(ERROR_PATH + messageKey));
         problem.setTitle(message);
         problem.setDetail(message);
         problem.setStatus(ex.getHttpStatus());
@@ -63,8 +83,12 @@ public class APIAdvice {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     ProblemDetail validation(MethodArgumentNotValidException ex) {
+        var messageKey = MessageResourceConstants.VALIDATION_ERROR;
+        var message = messageSource.getMessage(messageKey, null,
+                LocaleContextHolder.getLocale());
         var problem = ProblemDetail.forStatus(HttpStatus.BAD_REQUEST);
-        problem.setTitle("Validation error");
+        problem.setTitle(message);
+        problem.setType(URI.create(ERROR_PATH + messageKey));
         problem.setStatus(HttpStatus.BAD_REQUEST);
         Map<String, List<String>> errors = new HashMap<>();
         ex.getBindingResult().getFieldErrors().forEach(error ->
@@ -83,16 +107,17 @@ public class APIAdvice {
         return problem;
     }
 
-    @ExceptionHandler(RemoteServerException.class)
-    ProblemDetail validation(RemoteServerException ex) {
-        var messageKey = Objects.isNull(ex.getMessage()) ? MessageResourceConstants.SERVER_ERROR : ex.getMessage();
-        var message = messageSource.getMessage(messageKey, ex.getArgs(),
+    // Handle all global exceptions
+    @ExceptionHandler(Exception.class)
+    public ProblemDetail handleAllOtherExceptions(Exception ex) {
+        ex.printStackTrace();
+        var messageKey = MessageResourceConstants.SERVER_ERROR;
+        var message = messageSource.getMessage(messageKey, null,
                 LocaleContextHolder.getLocale());
-
-        var p = ProblemDetail.forStatus(ex.getHttpStatus());
-        p.setTitle(message);
-        p.setDetail(message);
-        p.setStatus(ex.getHttpStatus());
-        return p;
+        ProblemDetail problem = ProblemDetail.forStatus(HttpStatus.INTERNAL_SERVER_ERROR);
+        problem.setType(URI.create(ERROR_PATH + messageKey));
+        problem.setTitle(message);
+        problem.setDetail( message);
+        return problem;
     }
 }

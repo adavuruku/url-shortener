@@ -5,6 +5,9 @@ import com.example.url_shortener.Models.Request.UrlCreateRequest;
 import com.example.url_shortener.Models.Response.UrlCreateResponse;
 import com.example.url_shortener.Models.Response.UrlMetaDataResponse;
 import com.example.url_shortener.Services.Interface.IUrlMappingService;
+import com.example.url_shortener.openapidoc.CreateShortUrlApiDoc;
+import com.example.url_shortener.openapidoc.UrlMetaDataApiDoc;
+import com.example.url_shortener.openapidoc.UrlRedirectApiDoc;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,10 +21,6 @@ import java.net.URI;
  **/
 @RestController
 public class URLShortenerController {
-//    MIGRATION_DB="Host=localhost;Port=5432;Database=rise_mig;Username=postgres;Password=sherif"
-//    REDIS="127.0.0.1:6379,ssl=False,abortConnect=False,connectRetry=5,connectTimeout=5000"
-//    REDIS_KEY_PREFIX=indtech:EMR:
-
 
     private final IUrlMappingService urlMappingService;
 
@@ -31,6 +30,7 @@ public class URLShortenerController {
 
     @PostMapping("/api/urls")
     @ResponseStatus(HttpStatus.CREATED)
+    @CreateShortUrlApiDoc
     public UrlCreateResponse create(@Valid @RequestBody UrlCreateRequest req) {
         UrlMapping m = urlMappingService.create(req.longUrl());
         String shortUrl = ServletUriComponentsBuilder.fromCurrentContextPath()
@@ -46,12 +46,17 @@ public class URLShortenerController {
 
     @GetMapping("/api/urls/{code}")
     @ResponseStatus(HttpStatus.OK)
+    @UrlMetaDataApiDoc
     public UrlMetaDataResponse metadata(@PathVariable String code) {
         UrlMapping m = urlMappingService.generateUrlMetaData(code);
         return new UrlMetaDataResponse(m.getCode(), m.getCreatedAt(), m.getHitCount());
     }
 
+
+
     @GetMapping("/r/{code}")
+    @ResponseStatus(HttpStatus.FOUND)
+    @UrlRedirectApiDoc
     public ResponseEntity<Void> redirect(@PathVariable String code) {
         String longUrl = urlMappingService.resolveLongUrl(code);
         urlMappingService.incrementHitCount(code);

@@ -22,7 +22,7 @@ public interface IURLMappingRepository extends JpaRepository<UrlMapping,Long> {
       set u.hitCount = u.hitCount + 1
       where u.code = :code
     """)
-    void incrementHitCount(@Param("code") String code);
+    int incrementHitCount(@Param("code") String code);
 
     Optional<UrlMapping> findByCode(String code);
     Optional<UrlMapping> findByLongUrl(String longUrl);

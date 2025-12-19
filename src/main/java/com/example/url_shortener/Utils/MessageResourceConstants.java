@@ -8,4 +8,6 @@ public class MessageResourceConstants {
     public static String  CODE_EXPIRED = "code.expired";
     public static String  SERVER_ERROR = "server.error";
     public static String  FAIL_TO_GENERATE_UNIQUE_CODE = "fail.to.generate.unique.code";
+    public static String  VALIDATION_ERROR = "validation.error";
+    public static String  REMOTE_ERROR = "remote.error";
 }

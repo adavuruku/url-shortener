@@ -5,6 +5,7 @@ import java.security.SecureRandom;
 /**
  * Created by Sherif.Abdulraheem 12/19/2025 - 12:20 PM
  **/
+
 public class Base62CodeGenerator {
     private static final String CHARS =
             "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";

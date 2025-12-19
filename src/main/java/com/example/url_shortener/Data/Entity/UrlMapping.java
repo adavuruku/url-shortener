@@ -2,6 +2,7 @@ package com.example.url_shortener.Data.Entity;
 
 import jakarta.persistence.*;
 
+import java.io.Serializable;
 import java.time.Instant;
 
 /**
@@ -9,13 +10,15 @@ import java.time.Instant;
  **/
 @Entity
 @Table(
-        name = "url_mapping",
+        name = "url_mappings",
         indexes = {
                 @Index(name = "idx_code", columnList = "code", unique = true),
                 @Index(name = "idx_long_url", columnList = "longUrl", unique = true)
         }
 )
-public class UrlMapping {
+public class UrlMapping implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
