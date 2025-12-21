@@ -10,4 +10,6 @@ public class MessageResourceConstants {
     public static String  FAIL_TO_GENERATE_UNIQUE_CODE = "fail.to.generate.unique.code";
     public static String  VALIDATION_ERROR = "validation.error";
     public static String  REMOTE_ERROR = "remote.error";
+    public static String  RATE_LIMIT_EXCEED_ERROR = "rate.limit.exceed.error";
+    public static String  NO_RESOURCE_FOUND = "no.resource.found";
 }

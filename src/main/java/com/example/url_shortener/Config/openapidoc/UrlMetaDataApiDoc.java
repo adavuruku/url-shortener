@@ -1,4 +1,4 @@
-package com.example.url_shortener.openapidoc;
+package com.example.url_shortener.Config.openapidoc;
 
 import com.example.url_shortener.Models.Response.UrlMetaDataResponse;
 import io.swagger.v3.oas.annotations.Operation;

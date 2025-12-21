@@ -1,12 +1,29 @@
 spring:
   application:
     name: url-shortener
+  mvc:
+    throw-exception-if-no-handler-found: true
+    web:
+      resources:
+        add-mappings: true
 
   datasource:
     url: jdbc:postgresql://localhost:5432/url_shortener
     username: postgres
     password: sherif
     driver-class-name: org.postgresql.Driver
+    hikari:
+      jdbc-url: jdbc:postgresql://localhost:5432/url_shortener
+      pool-name: url-shortener-pool
+      connection-timeout: 30000
+      pool-size: 10
+      idle-timeout: 30
+      max-lifetime: 1800000
+      username: ${spring.datasource.username}
+      password: ${spring.datasource.password}
+      leak-detection-threshold: 60000
+      minimum-idle: 10
+      schema: public
 
   jpa:
     hibernate:
@@ -22,8 +39,8 @@ spring:
     locations: classpath:db/migration
     baseline-on-migrate: true
     url: jdbc:postgresql://localhost:5432/url_shortener
-    user: postgres
-    password: sherif
+    user: ${spring.datasource.username}
+    password: ${spring.datasource.password}
     schemas: public
     out-of-order: true
 
@@ -42,13 +59,21 @@ spring:
 server:
   port: 9090
 
-short-url:
-  expiry-minutes: 60
-  max-create-retry: 5
+app-config:
+  short-url:
+    expiry-minutes: 60
+    max-create-retry: 5
   thread-config:
     core-pool-size: 5
     max-pool-size: 10
     queue-capacity: 100
+  cache-config:
+    ttl-minutes: 10
+  rate-limit-config:
+    limit-period-minutes: 1
+    limit-token: 10
+    limit-capacity: 10
+
 
 management:
   endpoints:

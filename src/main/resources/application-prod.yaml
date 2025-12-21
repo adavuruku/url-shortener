@@ -9,8 +9,8 @@ spring:
 
   datasource:
     url: jdbc:postgresql://localhost:5432/url_shortener
-    username: postgres
-    password: sherif
+    username: root
+    password: root
     driver-class-name: org.postgresql.Driver
     hikari:
       jdbc-url: jdbc:postgresql://localhost:5432/url_shortener

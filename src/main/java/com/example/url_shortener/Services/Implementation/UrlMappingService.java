@@ -1,10 +1,10 @@
 package com.example.url_shortener.Services.Implementation;
 
-import com.example.url_shortener.Config.ShortUrlProperties;
+import com.example.url_shortener.Config.AppConfigProperties;
 import com.example.url_shortener.Data.Entity.UrlMapping;
 import com.example.url_shortener.Data.Repository.IURLMappingRepository;
 import com.example.url_shortener.Exceptions.CodeExpiredException;
-import com.example.url_shortener.Exceptions.FailledToCompleteOperationException;
+import com.example.url_shortener.Exceptions.FailedToCompleteOperationException;
 import com.example.url_shortener.Exceptions.NotFoundException;
 import com.example.url_shortener.Services.Interface.IUrlMappingService;
 import com.example.url_shortener.Utils.Base62CodeGenerator;
@@ -33,13 +33,13 @@ public class UrlMappingService implements IUrlMappingService {
 
     private final IURLMappingRepository repository;
     private final Base62CodeGenerator generator;
-    private final ShortUrlProperties properties;
+    private final AppConfigProperties properties;
     private final Counter redirectCounter;
     private final ApplicationContext applicationContext;
     public UrlMappingService(
             IURLMappingRepository repository,
             Base62CodeGenerator generator,
-            ShortUrlProperties properties,
+            AppConfigProperties properties,
             MeterRegistry registry,
             ApplicationContext applicationContext
     ) {
@@ -60,8 +60,14 @@ public class UrlMappingService implements IUrlMappingService {
     @Transactional
     @Async("taskExecutor")
     public void incrementHitCount(String code) {
-        repository.incrementHitCount(code);
-        redirectCounter.increment();
+        try{
+            repository.incrementHitCount(code);
+            redirectCounter.increment();
+        }catch (Exception e){
+            e.printStackTrace();
+            throw e;
+        }
+
     }
 
 
@@ -123,7 +129,7 @@ public class UrlMappingService implements IUrlMappingService {
      */
     @Retryable(
             retryFor = DataIntegrityViolationException.class,
-            maxAttemptsExpression = "#{@shortUrlProperties.maxCreateRetry}",
+            maxAttemptsExpression = "#{@appConfigProperties.shortUrl.maxCreateRetry}",
             backoff = @Backoff(delay = 50)
     )
     @Override
@@ -145,7 +151,7 @@ public class UrlMappingService implements IUrlMappingService {
             mapping.setLongUrl(longUrl);
             mapping.setCreatedAt(Instant.now());
 
-            long expiryMinutes = properties.getExpiryMinutes();
+            long expiryMinutes = properties.getShortUrl().getExpiryMinutes();
             if (expiryMinutes > 0) {
                 mapping.setExpiresAt(
                         mapping.getCreatedAt().plus(expiryMinutes, ChronoUnit.MINUTES)
@@ -164,8 +170,8 @@ public class UrlMappingService implements IUrlMappingService {
      */
     @Recover
     public UrlMapping recover(DataIntegrityViolationException ex, String longUrl) {
-        throw new FailledToCompleteOperationException(
-                new Object[]{properties.getMaxCreateRetry()}
+        throw new FailedToCompleteOperationException(
+                new Object[]{properties.getShortUrl().getMaxCreateRetry()}
         );
     }
 

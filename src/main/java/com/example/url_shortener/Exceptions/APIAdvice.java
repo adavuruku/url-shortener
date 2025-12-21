@@ -1,13 +1,16 @@
 package com.example.url_shortener.Exceptions;
 
 import com.example.url_shortener.Utils.MessageResourceConstants;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 import java.net.URI;
 import java.util.*;
@@ -18,7 +21,7 @@ import java.util.*;
 @RestControllerAdvice
 public class APIAdvice {
 
-    private final String ERROR_PATH = "https://api.example.com/problems/";
+    private final String ERROR_PATH = "errors/";
     private final MessageSource messageSource;
 
     public APIAdvice(MessageSource messageSource) {
@@ -26,7 +29,7 @@ public class APIAdvice {
     }
 
     @ExceptionHandler(NotFoundException.class)
-    ProblemDetail notFound(NotFoundException ex) {
+    ResponseEntity<ProblemDetail> notFoundException(NotFoundException ex) {
         var messageKey = Objects.isNull(ex.getMessage()) ? MessageResourceConstants.CODE_NOT_FOUND : ex.getMessage();
         var message = messageSource.getMessage(messageKey, ex.getArgs(),
                 LocaleContextHolder.getLocale());
@@ -35,11 +38,11 @@ public class APIAdvice {
         problem.setTitle(message);
         problem.setDetail(message);
         problem.setStatus(ex.getHttpStatus());
-        return problem;
+        return ResponseEntity.status(ex.getHttpStatus()).body(problem);
     }
 
     @ExceptionHandler(CodeExpiredException.class)
-    ProblemDetail notFound(CodeExpiredException ex) {
+    ResponseEntity<ProblemDetail> codeExpiredException(CodeExpiredException ex) {
         var messageKey = Objects.isNull(ex.getMessage()) ? MessageResourceConstants.CODE_EXPIRED : ex.getMessage();
         var message = messageSource.getMessage(messageKey, ex.getArgs(),
                 LocaleContextHolder.getLocale());
@@ -49,11 +52,11 @@ public class APIAdvice {
         problem.setTitle(message);
         problem.setDetail(message);
         problem.setStatus(ex.getHttpStatus());
-        return problem;
+        return ResponseEntity.status(ex.getHttpStatus()).body(problem);
     }
 
-    @ExceptionHandler(FailledToCompleteOperationException.class)
-    ProblemDetail notFound(FailledToCompleteOperationException ex) {
+    @ExceptionHandler(FailedToCompleteOperationException.class)
+    ResponseEntity<ProblemDetail> failedToCompleteOperationException(FailedToCompleteOperationException ex) {
         var messageKey = Objects.isNull(ex.getMessage()) ? MessageResourceConstants.FAIL_TO_GENERATE_UNIQUE_CODE : ex.getMessage();
         var message = messageSource.getMessage(messageKey, ex.getArgs(),
                 LocaleContextHolder.getLocale());
@@ -63,12 +66,25 @@ public class APIAdvice {
         problem.setTitle(message);
         problem.setDetail(message);
         problem.setStatus(ex.getHttpStatus());
-        return problem;
+        return ResponseEntity.status(ex.getHttpStatus()).body(problem);
     }
 
+    @ExceptionHandler(RateLimitExceedException.class)
+    ResponseEntity<ProblemDetail> rateLimitExceedException(RateLimitExceedException ex) {
+        var messageKey = Objects.isNull(ex.getMessage()) ? MessageResourceConstants.RATE_LIMIT_EXCEED_ERROR : ex.getMessage();
+        var message = messageSource.getMessage(messageKey, ex.getArgs(),
+                LocaleContextHolder.getLocale());
+
+        var problem = ProblemDetail.forStatus(ex.getHttpStatus());
+        problem.setType(URI.create(ERROR_PATH+ messageKey));
+        problem.setTitle(message);
+        problem.setDetail(message);
+        problem.setStatus(ex.getHttpStatus());
+        return ResponseEntity.status(ex.getHttpStatus()).body(problem);
+    }
 
     @ExceptionHandler(RemoteServerException.class)
-    ProblemDetail validation(RemoteServerException ex) {
+    ResponseEntity<ProblemDetail> validation(RemoteServerException ex) {
         var messageKey = Objects.isNull(ex.getMessage()) ? MessageResourceConstants.REMOTE_ERROR : ex.getMessage();
         var message = messageSource.getMessage(messageKey, ex.getArgs(),
                 LocaleContextHolder.getLocale());
@@ -78,11 +94,11 @@ public class APIAdvice {
         problem.setTitle(message);
         problem.setDetail(message);
         problem.setStatus(ex.getHttpStatus());
-        return problem;
+        return ResponseEntity.status(ex.getHttpStatus()).body(problem);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    ProblemDetail validation(MethodArgumentNotValidException ex) {
+    ResponseEntity<ProblemDetail> validation(MethodArgumentNotValidException ex) {
         var messageKey = MessageResourceConstants.VALIDATION_ERROR;
         var message = messageSource.getMessage(messageKey, null,
                 LocaleContextHolder.getLocale());
@@ -104,13 +120,25 @@ public class APIAdvice {
         );
 
         problem.setProperty("errors", errors);
-        return problem;
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(problem);
+    }
+
+    @ExceptionHandler(NoResourceFoundException.class)
+    ResponseEntity<ProblemDetail> noResourceFound(NoResourceFoundException ex, HttpServletRequest request) {
+        String path = request.getRequestURI();
+        var messageKey = MessageResourceConstants.NO_RESOURCE_FOUND;
+        var message = messageSource.getMessage(messageKey, new Object[] {path},
+                LocaleContextHolder.getLocale());
+        var problem = ProblemDetail.forStatus(HttpStatus.NOT_FOUND);
+        problem.setTitle(message);
+        problem.setType(URI.create(ERROR_PATH + messageKey));
+        problem.setStatus(HttpStatus.NOT_FOUND);
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(problem);
     }
 
     // Handle all global exceptions
     @ExceptionHandler(Exception.class)
-    public ProblemDetail handleAllOtherExceptions(Exception ex) {
-        ex.printStackTrace();
+    ResponseEntity<ProblemDetail> handleAllOtherExceptions(Exception ex) {
         var messageKey = MessageResourceConstants.SERVER_ERROR;
         var message = messageSource.getMessage(messageKey, null,
                 LocaleContextHolder.getLocale());
@@ -118,6 +146,6 @@ public class APIAdvice {
         problem.setType(URI.create(ERROR_PATH + messageKey));
         problem.setTitle(message);
         problem.setDetail( message);
-        return problem;
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(problem);
     }
 }

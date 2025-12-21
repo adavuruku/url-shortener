@@ -1,6 +1,9 @@
 package com.example.url_shortener.Config;
 
 import com.example.url_shortener.Utils.Base62CodeGenerator;
+import io.github.bucket4j.Bandwidth;
+import io.github.bucket4j.Bucket;
+import io.github.bucket4j.Refill;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Contact;
 import io.swagger.v3.oas.models.info.Info;
@@ -18,10 +21,10 @@ import java.util.concurrent.Executor;
 @Configuration
 public class AppConfig {
 
-    private final ShortUrlProperties shortUrlProperties;
+    private final AppConfigProperties apConfigProperties;
 
-    public AppConfig(ShortUrlProperties shortUrlProperties) {
-        this.shortUrlProperties = shortUrlProperties;
+    public AppConfig(AppConfigProperties apConfigProperties) {
+        this.apConfigProperties = apConfigProperties;
     }
 
     /**
@@ -43,7 +46,7 @@ public class AppConfig {
     @Bean
     public RedisCacheConfiguration cacheConfiguration() {
         return RedisCacheConfiguration.defaultCacheConfig()
-                .entryTtl(Duration.ofMinutes(10))
+                .entryTtl(Duration.ofMinutes(apConfigProperties.getCacheConfig().getTtlMinutes()))
                 .disableCachingNullValues();
     }
 
@@ -56,9 +59,9 @@ public class AppConfig {
     @Bean
     public Executor taskExecutor() {
         ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
-        executor.setCorePoolSize((int)shortUrlProperties.getThreadConfig().getCorePoolSize());
-        executor.setMaxPoolSize((int) shortUrlProperties.getThreadConfig().getMaxPoolSize());
-        executor.setQueueCapacity((int)shortUrlProperties.getThreadConfig().getQueueCapacity());
+        executor.setCorePoolSize((int)apConfigProperties.getThreadConfig().getCorePoolSize());
+        executor.setMaxPoolSize((int) apConfigProperties.getThreadConfig().getMaxPoolSize());
+        executor.setQueueCapacity((int)apConfigProperties.getThreadConfig().getQueueCapacity());
         executor.setThreadNamePrefix("async-thread-");
         executor.initialize();
         return executor;
@@ -83,5 +86,27 @@ public class AppConfig {
                                         .email("aabdulraheemsherif@gmail.com")
                         )
                 );
+    }
+
+
+    /**
+     * RateLimit config
+     * @return
+     */
+
+    @Bean
+    public Bucket createBucket() {
+        Bandwidth limit = Bandwidth.classic(
+                (int)apConfigProperties.getRateLimitConfig().getLimitCapacity(),
+                Refill.intervally(
+                        (int)apConfigProperties.getRateLimitConfig().getLimitToken(),
+                        Duration.ofMinutes(
+                                (int)apConfigProperties.getRateLimitConfig().getLimitPeriodMinutes()
+                        )
+                )
+        );
+        return Bucket.builder()
+                .addLimit(limit)
+                .build();
     }
 }

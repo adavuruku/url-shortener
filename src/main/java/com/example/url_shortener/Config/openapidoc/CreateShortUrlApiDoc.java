@@ -1,4 +1,4 @@
-package com.example.url_shortener.openapidoc;
+package com.example.url_shortener.Config.openapidoc;
 
 /**
  * Created by Sherif.Abdulraheem 12/19/2025 - 11:51 PM

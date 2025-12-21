@@ -5,22 +5,22 @@ import org.springframework.http.HttpStatus;
 /**
  * Created by Sherif.Abdulraheem 12/19/2025 - 3:50 PM
  **/
-public class FailledToCompleteOperationException extends RuntimeException {
+public class FailedToCompleteOperationException extends RuntimeException {
     private final transient Object[] args;
     private final HttpStatus status;
 
-    public FailledToCompleteOperationException(String message) {
+    public FailedToCompleteOperationException(String message) {
         super(message);
         this.status = HttpStatus.GONE;
         args = new Object[]{};
     }
 
-    public FailledToCompleteOperationException(Object[] args) {
+    public FailedToCompleteOperationException(Object[] args) {
         this.args = args;
         this.status = HttpStatus.GONE;
     }
 
-    public FailledToCompleteOperationException(String message, Object[] args, HttpStatus status) {
+    public FailedToCompleteOperationException(String message, Object[] args, HttpStatus status) {
         super(message);
         this.args = args;
         this.status = status;
