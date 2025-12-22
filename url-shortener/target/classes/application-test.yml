@@ -46,8 +46,8 @@ app-config:
     max-create-retry: 5
   rate-limit-config:
     limit-period-minutes: 1
-    limit-token: 4
-    limit-capacity: 4
+    limit-token: 5
+    limit-capacity: 5
 
 management:
   endpoints:

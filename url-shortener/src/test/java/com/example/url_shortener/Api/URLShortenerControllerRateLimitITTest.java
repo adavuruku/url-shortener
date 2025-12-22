@@ -66,6 +66,12 @@ class URLShortenerControllerRateLimitITTest {
                         .content(payload))
                 .andExpect(status().isCreated());
 
+        //allowed request
+        mockMvc.perform(post("/api/urls")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(payload))
+                .andExpect(status().isCreated());
+
         //should be blocked since we've 4 capacity
         mockMvc.perform(post("/api/urls")
                         .contentType(MediaType.APPLICATION_JSON)
