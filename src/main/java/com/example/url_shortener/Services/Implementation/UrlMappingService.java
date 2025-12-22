@@ -60,14 +60,8 @@ public class UrlMappingService implements IUrlMappingService {
     @Transactional
     @Async("taskExecutor")
     public void incrementHitCount(String code) {
-        try{
-            repository.incrementHitCount(code);
-            redirectCounter.increment();
-        }catch (Exception e){
-            e.printStackTrace();
-            throw e;
-        }
-
+        repository.incrementHitCount(code);
+        redirectCounter.increment();
     }
 
 

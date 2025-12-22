@@ -1,0 +1,4 @@
+GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
+url-shortener,com.example.url_shortener,UrlShortenerApplication,0,8,0,0,0,3,0,2,0,2
+url-shortener,com.example.url_shortener.Services.Implementation,UrlMappingService,0,162,1,5,0,38,1,13,0,11
+url-shortener,com.example.url_shortener.Api,URLShortenerController,0,64,0,0,0,17,0,4,0,4

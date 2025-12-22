@@ -1,4 +1,4 @@
 com\example\url_shortener\Api\URLShortenerControllerIT.class
-com\example\url_shortener\UrlShortenerApplicationTests.class
 com\example\url_shortener\Services\Implementation\UrlMappingServiceTest.class
 com\example\url_shortener\Api\URLShortenerControllerTest.class
+com\example\url_shortener\UrlShortenerApplicationTests.class

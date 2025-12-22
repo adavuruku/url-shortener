@@ -8,7 +8,7 @@ spring:
     username: sa
     password:
     hikari:
-      jdbc-url: jdbc:h2:mem:testDb;DB_CLOSE_DELAY=-1
+      jdbc-url:  ${spring.datasource.url}
       pool-name: url-shortener-pool
       connection-timeout: 30000
       pool-size: 10

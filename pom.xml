@@ -11,6 +11,7 @@
 	<groupId>com.example</groupId>
 	<artifactId>url-shortener</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
+	<packaging>jar</packaging>
 	<name>url-shortener</name>
 	<description>URL Shortener project</description>
 	<url/>
@@ -131,8 +132,8 @@
 						<exclude>**/Config/**</exclude>
 						<exclude>**/Data/**</exclude>
 						<exclude>**/Exceptions/**</exclude>
-						<exclude>**/Filters/*</exclude>
-						<exclude>**/Models/*</exclude>
+						<exclude>**/Interceptors/*</exclude>
+						<exclude>**/Models/*/**</exclude>
 						<exclude>**/Utils/*</exclude>
 					</excludes>
 				</configuration>
@@ -159,6 +160,17 @@
 						<spring.profiles.active>test</spring.profiles.active>
 					</systemPropertyVariables>
 				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<goals>
+							<goal>repackage</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>

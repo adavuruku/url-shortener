@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>UrlMappingService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">url-shortener</a> &gt; <a href="index.source.html" class="el_package">com.example.url_shortener.Services.Implementation</a> &gt; <span class="el_source">UrlMappingService.java</span></div><h1>UrlMappingService.java</h1><pre class="source lang-java linenums">package com.example.url_shortener.Services.Implementation;
+
+import com.example.url_shortener.Config.AppConfigProperties;
+import com.example.url_shortener.Data.Entity.UrlMapping;
+import com.example.url_shortener.Data.Repository.IURLMappingRepository;
+import com.example.url_shortener.Exceptions.CodeExpiredException;
+import com.example.url_shortener.Exceptions.FailedToCompleteOperationException;
+import com.example.url_shortener.Exceptions.NotFoundException;
+import com.example.url_shortener.Services.Interface.IUrlMappingService;
+import com.example.url_shortener.Utils.Base62CodeGenerator;
+import io.micrometer.core.instrument.Counter;
+import io.micrometer.core.instrument.MeterRegistry;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.context.ApplicationContext;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.retry.annotation.Backoff;
+import org.springframework.retry.annotation.Recover;
+import org.springframework.retry.annotation.Retryable;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
+
+/**
+ * Created by Sherif.Abdulraheem 12/19/2025 - 2:41 PM
+ **/
+@Service
+public class UrlMappingService implements IUrlMappingService {
+
+    private final IURLMappingRepository repository;
+    private final Base62CodeGenerator generator;
+    private final AppConfigProperties properties;
+    private final Counter redirectCounter;
+    private final ApplicationContext applicationContext;
+    public UrlMappingService(
+            IURLMappingRepository repository,
+            Base62CodeGenerator generator,
+            AppConfigProperties properties,
+            MeterRegistry registry,
+            ApplicationContext applicationContext
+<span class="fc" id="L45">    ) {</span>
+<span class="fc" id="L46">        this.repository = repository;</span>
+<span class="fc" id="L47">        this.generator = generator;</span>
+<span class="fc" id="L48">        this.properties = properties;</span>
+<span class="fc" id="L49">        this.applicationContext = applicationContext;</span>
+<span class="fc" id="L50">        this.redirectCounter =</span>
+<span class="fc" id="L51">                registry.counter(&quot;shortener_redirect_total&quot;);</span>
+<span class="fc" id="L52">    }</span>
+
+    /**
+     * increment hit count on code
+     * @param code
+     */
+    @Override
+    @Modifying
+    @Transactional
+    @Async(&quot;taskExecutor&quot;)
+    public void incrementHitCount(String code) {
+<span class="fc" id="L63">        repository.incrementHitCount(code);</span>
+<span class="fc" id="L64">        redirectCounter.increment();</span>
+<span class="fc" id="L65">    }</span>
+
+
+    /**
+     * Resolve short code to long URL
+     * @param code
+     * @return
+     */
+    @Override
+    public String resolveLongUrl(String code) {
+<span class="fc" id="L75">        UrlMapping mapping = getURlMetadataByCode(code);</span>
+<span class="fc" id="L76">        String url = mapping.getLongUrl();</span>
+<span class="fc" id="L77">        return url;</span>
+    }
+
+    /**
+     * Generate url meta data
+     *
+     * @param code
+     * @return
+     */
+
+    @Override
+    public UrlMapping generateUrlMetaData(String code){
+<span class="fc" id="L89">       return getURlMetadataByCode(code);</span>
+    }
+
+
+    /**
+     * Method to fetch url mapping.
+     * @param code
+     * @return UrlMapping
+     */
+    @Cacheable(
+            cacheNames = &quot;urlByCode&quot;,
+            key = &quot;#code&quot;,
+            unless = &quot;#result.expiresAt != null &amp;&amp; #result.expiresAt.isBefore(T(java.time.Instant).now())&quot;
+    )
+    public UrlMapping getURlMetadataByCode(String code){
+<span class="fc" id="L104">        UrlMapping mapping = repository.findByCode(code)</span>
+<span class="fc" id="L105">                .orElseThrow(() -&gt; new NotFoundException(new Object[]{code}));</span>
+<span class="fc bfc" id="L106" title="All 2 branches covered.">        if (mapping.getExpiresAt() != null &amp;&amp;</span>
+<span class="pc bpc" id="L107" title="1 of 2 branches missed.">                mapping.getExpiresAt().isBefore(Instant.now())) {</span>
+
+            //call delete in background to remove code from db and cache
+<span class="fc" id="L110">            UrlMappingService urlMappingService = applicationContext.getBean(UrlMappingService.class);</span>
+<span class="fc" id="L111">            urlMappingService.delete(code);</span>
+
+<span class="fc" id="L113">            throw new CodeExpiredException(new Object[]{code});</span>
+        }
+<span class="fc" id="L115">        return mapping;</span>
+    }
+
+
+    /**
+     * Create new shorten url
+     * @param longUrl
+     * @return created UrlMapping
+     */
+    @Retryable(
+            retryFor = DataIntegrityViolationException.class,
+            maxAttemptsExpression = &quot;#{@appConfigProperties.shortUrl.maxCreateRetry}&quot;,
+            backoff = @Backoff(delay = 50)
+    )
+    @Override
+    public UrlMapping create(String longUrl) {
+<span class="fc" id="L131">        return repository.findByLongUrl(longUrl)</span>
+<span class="fc" id="L132">                .orElseGet(() -&gt;  createUrlMapping(longUrl));</span>
+    }
+
+
+    /**
+     * create new urlMapping
+     * @param longUrl
+     * @return
+     */
+    @Transactional
+    public UrlMapping createUrlMapping(String longUrl) {
+<span class="fc" id="L143">            UrlMapping mapping = new UrlMapping();</span>
+<span class="fc" id="L144">            mapping.setCode(generator.generate());</span>
+<span class="fc" id="L145">            mapping.setLongUrl(longUrl);</span>
+<span class="fc" id="L146">            mapping.setCreatedAt(Instant.now());</span>
+
+<span class="fc" id="L148">            long expiryMinutes = properties.getShortUrl().getExpiryMinutes();</span>
+<span class="fc bfc" id="L149" title="All 2 branches covered.">            if (expiryMinutes &gt; 0) {</span>
+<span class="fc" id="L150">                mapping.setExpiresAt(</span>
+<span class="fc" id="L151">                        mapping.getCreatedAt().plus(expiryMinutes, ChronoUnit.MINUTES)</span>
+                );
+            }
+
+<span class="fc" id="L155">            return repository.save(mapping);</span>
+    }
+
+    /**
+     * Retry recovery method.
+     *
+     * @param ex
+     * @param longUrl
+     * @return
+     */
+    @Recover
+    public UrlMapping recover(DataIntegrityViolationException ex, String longUrl) {
+<span class="fc" id="L167">        throw new FailedToCompleteOperationException(</span>
+<span class="fc" id="L168">                new Object[]{properties.getShortUrl().getMaxCreateRetry()}</span>
+        );
+    }
+
+
+    /**
+     * Delete expired short url from db and cache
+     *
+     * @param code
+     */
+    @CacheEvict(cacheNames = &quot;urlByCode&quot;, key = &quot;#code&quot;)
+    @Async(&quot;taskExecutor&quot;)
+    @Transactional
+    public void delete(String code) {
+<span class="fc" id="L182">        repository.deleteByCode(code);</span>
+<span class="fc" id="L183">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>
