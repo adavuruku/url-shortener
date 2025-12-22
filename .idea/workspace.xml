@@ -5,7 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f2882df7-c0f8-45c5-9552-abb3cb990bc3" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/url-shortener/src/test/java/com/example/url_shortener/Api/URLShortenerControllerIT.java" beforeDir="false" afterPath="$PROJECT_DIR$/url-shortener/src/test/java/com/example/url_shortener/Api/URLShortenerControllerIT.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -62,6 +62,7 @@
     "JUnit.URLShortenerControllerIT.create_shouldReturn404_BadRequest_BadUrlSize.executor": "Run",
     "JUnit.URLShortenerControllerIT.executor": "Run",
     "JUnit.URLShortenerControllerIT.redirect_should_404_code_not_exist.executor": "Run",
+    "JUnit.URLShortenerControllerRateLimitITTest.create_shouldReturn429WhenRateLimitExceeded.executor": "Run",
     "JUnit.URLShortenerControllerRateLimitITTest.executor": "Run",
     "JUnit.UrlCreateResponseTest.executor": "Run",
     "JUnit.UrlMetaDataResponseTest.executor": "Run",

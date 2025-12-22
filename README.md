@@ -1,4 +1,7 @@
-# URL Shortener Service
+# Senior Java Role Assessment
+
+## Project 1: URL Shortener Service
+
 ```bash
 Sherif Abdulraheem A.
 https://www.linkedin.com/in/abdulraheem-sherif-adavuruku-729a77107
@@ -199,7 +202,7 @@ GET /r/abc123
 ## 🖥️ CLI Usage (Optional)
 
 You can test via `curl`:
-
+#### Create
 ```bash
 curl -X POST http://localhost:9090/api/v1/urls \
   -H "Content-Type: application/json" \
@@ -207,6 +210,30 @@ curl -X POST http://localhost:9090/api/v1/urls \
 ```
 
 ---
+#### Redirect by code (wer20)
+```bash
+curl -X GET http://localhost:9090/r/wer20 \
+  -H "Content-Type: application/json"
+```
+
+---
+
+#### Metadata by code (wer20)
+```bash
+curl -X GET http://localhost:9090/api/urls/wer20 \
+  -H "Content-Type: application/json"
+```
+
+---
+
+#### Redirect total metric test
+```bash
+curl -X GET http://localhost:9090/actuator/metrics/shortener_redirect_total \
+  -H "Content-Type: application/json"
+```
+
+---
+
 
 ## 🧠 Assumptions
 
@@ -359,7 +386,7 @@ This project is provided for **educational and demonstration purposes**.
 ---
 
 
-# Log Cli
+## Project 2: Log Cli
 ```bash
 Sherif Abdulraheem A.
 https://www.linkedin.com/in/abdulraheem-sherif-adavuruku-729a77107
