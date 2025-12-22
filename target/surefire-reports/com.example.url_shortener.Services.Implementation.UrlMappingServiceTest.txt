@@ -1,4 +1,0 @@
--------------------------------------------------------------------------------
-Test set: com.example.url_shortener.Services.Implementation.UrlMappingServiceTest
--------------------------------------------------------------------------------
-Tests run: 11, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.217 s -- in com.example.url_shortener.Services.Implementation.UrlMappingServiceTest

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>URLShortenerController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">URL Shortener Module</a> &gt; <a href="index.source.html" class="el_package">com.example.url_shortener.Api</a> &gt; <span class="el_source">URLShortenerController.java</span></div><h1>URLShortenerController.java</h1><pre class="source lang-java linenums">package com.example.url_shortener.Api;
+
+import com.example.url_shortener.Data.Entity.UrlMapping;
+import com.example.url_shortener.Models.Request.UrlCreateRequest;
+import com.example.url_shortener.Models.Response.UrlCreateResponse;
+import com.example.url_shortener.Models.Response.UrlMetaDataResponse;
+import com.example.url_shortener.Services.Interface.IUrlMappingService;
+import com.example.url_shortener.Config.openapidoc.CreateShortUrlApiDoc;
+import com.example.url_shortener.Config.openapidoc.UrlMetaDataApiDoc;
+import com.example.url_shortener.Config.openapidoc.UrlRedirectApiDoc;
+import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
+import java.net.URI;
+
+/**
+ * Created by Sherif.Abdulraheem 12/19/2025 - 12:04 PM
+ **/
+@RestController
+public class URLShortenerController {
+
+    private final IUrlMappingService urlMappingService;
+
+<span class="fc" id="L27">    public URLShortenerController(IUrlMappingService urlMappingService) {</span>
+<span class="fc" id="L28">        this.urlMappingService = urlMappingService;</span>
+<span class="fc" id="L29">    }</span>
+
+    @PostMapping(&quot;/api/urls&quot;)
+    @ResponseStatus(HttpStatus.CREATED)
+    @CreateShortUrlApiDoc
+    public UrlCreateResponse create(@Valid @RequestBody UrlCreateRequest req) {
+<span class="fc" id="L35">        UrlMapping m = urlMappingService.create(req.longUrl());</span>
+<span class="fc" id="L36">        String shortUrl = ServletUriComponentsBuilder.fromCurrentContextPath()</span>
+<span class="fc" id="L37">                .path(&quot;/r/{code}&quot;)</span>
+<span class="fc" id="L38">                .buildAndExpand(m.getCode())</span>
+<span class="fc" id="L39">                .toUriString();</span>
+
+<span class="fc" id="L41">        return new UrlCreateResponse(</span>
+<span class="fc" id="L42">                m.getCode(),</span>
+                shortUrl
+        );
+    }
+
+    @GetMapping(&quot;/api/urls/{code}&quot;)
+    @ResponseStatus(HttpStatus.OK)
+    @UrlMetaDataApiDoc
+    public UrlMetaDataResponse metadata(@PathVariable String code) {
+<span class="fc" id="L51">        UrlMapping m = urlMappingService.generateUrlMetaData(code);</span>
+<span class="fc" id="L52">        return new UrlMetaDataResponse(m.getCode(), m.getCreatedAt(), m.getHitCount());</span>
+    }
+
+
+
+    @GetMapping(&quot;/r/{code}&quot;)
+    @ResponseStatus(HttpStatus.FOUND)
+    @UrlRedirectApiDoc
+    public ResponseEntity&lt;Void&gt; redirect(@PathVariable String code) {
+<span class="fc" id="L61">        String longUrl = urlMappingService.resolveLongUrl(code);</span>
+<span class="fc" id="L62">        urlMappingService.incrementHitCount(code);</span>
+<span class="fc" id="L63">        return ResponseEntity.status(HttpStatus.FOUND)</span>
+<span class="fc" id="L64">                .location(URI.create(longUrl))</span>
+<span class="fc" id="L65">                .build();</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

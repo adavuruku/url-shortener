@@ -1,0 +1,340 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="f2882df7-c0f8-45c5-9552-abb3cb990bc3" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/log-cli/Dockerfile" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/log-cli/samples/access.csv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/log-cli/src/main/java/com/example/logcli/LogAnalyzer.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/log-cli/src/main/java/com/example/logcli/LogParser.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/log-cli/src/main/java/com/example/logcli/Models/CliArgs.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/log-cli/src/main/java/com/example/logcli/Models/LogEntry.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/log-cli/src/test/java/com/example/logcli/LogAnalyzerTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/log-cli/src/test/java/com/example/logcli/LogCliApplicationTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/log-cli/src/test/java/com/example/logcli/LogParserTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/log-cli/src/test/java/com/example/logcli/Models/CliArgsTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/log-cli/src/test/java/com/example/logcli/Models/LogEntryTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/url-shortener/Dockerfile" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/url-shortener/pom.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/url-shortener/src/test/java/com/example/url_shortener/Api/URLShortenerControllerRateLimitITTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/uiDesigner.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.mvn/wrapper/maven-wrapper.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dockerfile" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/HELP.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mvnw" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mvnw.cmd" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/url_shortener/Api/URLShortenerController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/url_shortener/Config/AppConfig.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/url_shortener/Config/AppConfigProperties.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/url_shortener/Config/IpRateLimiterStorage.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/url_shortener/Config/WebConfig.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/url_shortener/Config/openapidoc/CreateShortUrlApiDoc.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/url_shortener/Config/openapidoc/ProblemDetailSchema.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/url_shortener/Config/openapidoc/UrlMetaDataApiDoc.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/url_shortener/Config/openapidoc/UrlRedirectApiDoc.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/url_shortener/Data/Entity/UrlMapping.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/url_shortener/Data/Repository/IURLMappingRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/url_shortener/Exceptions/APIAdvice.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/url_shortener/Exceptions/CodeExpiredException.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/url_shortener/Exceptions/FailedToCompleteOperationException.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/url_shortener/Exceptions/NotFoundException.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/url_shortener/Exceptions/RateLimitExceedException.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/url_shortener/Exceptions/RemoteServerException.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/url_shortener/Interceptors/RateLimitInterceptor.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/url_shortener/Models/Request/UrlCreateRequest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/url_shortener/Models/Response/UrlCreateResponse.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/url_shortener/Models/Response/UrlMetaDataResponse.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/url_shortener/Services/Implementation/UrlMappingService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/url_shortener/Services/Interface/IUrlMappingService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/url_shortener/UrlShortenerApplication.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/url_shortener/Utils/Base62CodeGenerator.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/url_shortener/Utils/MessageResourceConstants.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/application-local.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/application-prod.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/application-test.yml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/application.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/db/migration/V1__create_url_mapping.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/messages.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/messages_en.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/example/url_shortener/Api/URLShortenerControllerIT.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/example/url_shortener/Api/URLShortenerControllerTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/example/url_shortener/Base62CodeGeneratorTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/example/url_shortener/Interceptors/RateLimitInterceptorTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/example/url_shortener/Models/Request/UrlCreateRequestTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/example/url_shortener/Models/Response/UrlCreateResponseTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/example/url_shortener/Models/Response/UrlMetaDataResponseTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/example/url_shortener/Services/Implementation/UrlMappingServiceTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/example/url_shortener/UrlShortenerApplicationTests.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/application-local.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/application-prod.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/application-test.yml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/application.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/db/migration/V1__create_url_mapping.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/messages.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/messages_en.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/jacoco.exec" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/createdFiles.lst" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/inputFiles.lst" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/site/jacoco/com.example.url_shortener.Api/URLShortenerController.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/site/jacoco/com.example.url_shortener.Api/URLShortenerController.java.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/site/jacoco/com.example.url_shortener.Api/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/site/jacoco/com.example.url_shortener.Api/index.source.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/site/jacoco/com.example.url_shortener.Interceptors/RateLimitInterceptor.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/site/jacoco/com.example.url_shortener.Interceptors/RateLimitInterceptor.java.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/site/jacoco/com.example.url_shortener.Interceptors/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/site/jacoco/com.example.url_shortener.Interceptors/index.source.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/site/jacoco/com.example.url_shortener.Models.Request/UrlCreateRequest.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/site/jacoco/com.example.url_shortener.Models.Request/UrlCreateRequest.java.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/site/jacoco/com.example.url_shortener.Models.Request/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/site/jacoco/com.example.url_shortener.Models.Request/index.source.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/site/jacoco/com.example.url_shortener.Models.Response/UrlCreateResponse.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/site/jacoco/com.example.url_shortener.Models.Response/UrlCreateResponse.java.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/site/jacoco/com.example.url_shortener.Models.Response/UrlMetaDataResponse.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/site/jacoco/com.example.url_shortener.Models.Response/UrlMetaDataResponse.java.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/site/jacoco/com.example.url_shortener.Models.Response/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/site/jacoco/com.example.url_shortener.Models.Response/index.source.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/site/jacoco/com.example.url_shortener.Services.Implementation/UrlMappingService.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/site/jacoco/com.example.url_shortener.Services.Implementation/UrlMappingService.java.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/site/jacoco/com.example.url_shortener.Services.Implementation/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/site/jacoco/com.example.url_shortener.Services.Implementation/index.source.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/site/jacoco/com.example.url_shortener/UrlShortenerApplication.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/site/jacoco/com.example.url_shortener/UrlShortenerApplication.java.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/site/jacoco/com.example.url_shortener/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/site/jacoco/com.example.url_shortener/index.source.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/site/jacoco/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/site/jacoco/jacoco-resources/branchfc.gif" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/site/jacoco/jacoco-resources/branchnc.gif" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/site/jacoco/jacoco-resources/branchpc.gif" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/site/jacoco/jacoco-resources/bundle.gif" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/site/jacoco/jacoco-resources/class.gif" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/site/jacoco/jacoco-resources/down.gif" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/site/jacoco/jacoco-resources/greenbar.gif" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/site/jacoco/jacoco-resources/group.gif" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/site/jacoco/jacoco-resources/method.gif" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/site/jacoco/jacoco-resources/package.gif" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/site/jacoco/jacoco-resources/prettify.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/site/jacoco/jacoco-resources/prettify.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/site/jacoco/jacoco-resources/redbar.gif" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/site/jacoco/jacoco-resources/report.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/site/jacoco/jacoco-resources/report.gif" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/site/jacoco/jacoco-resources/session.gif" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/site/jacoco/jacoco-resources/sort.gif" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/site/jacoco/jacoco-resources/sort.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/site/jacoco/jacoco-resources/source.gif" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/site/jacoco/jacoco-resources/up.gif" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/site/jacoco/jacoco-sessions.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/site/jacoco/jacoco.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/site/jacoco/jacoco.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/TEST-com.example.url_shortener.Api.URLShortenerControllerTest.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/TEST-com.example.url_shortener.Interceptors.RateLimitInterceptorTest.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/TEST-com.example.url_shortener.Models.Request.UrlCreateRequestTest.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/TEST-com.example.url_shortener.Models.Response.UrlCreateResponseTest.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/TEST-com.example.url_shortener.Models.Response.UrlMetaDataResponseTest.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/TEST-com.example.url_shortener.Services.Implementation.UrlMappingServiceTest.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/TEST-com.example.url_shortener.UrlShortenerApplicationTests.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/com.example.url_shortener.Api.URLShortenerControllerTest.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/com.example.url_shortener.Interceptors.RateLimitInterceptorTest.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/com.example.url_shortener.Models.Request.UrlCreateRequestTest.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/com.example.url_shortener.Models.Response.UrlCreateResponseTest.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/com.example.url_shortener.Models.Response.UrlMetaDataResponseTest.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/com.example.url_shortener.Services.Implementation.UrlMappingServiceTest.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/com.example.url_shortener.UrlShortenerApplicationTests.txt" beforeDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MavenImportPreferences">
+    <option name="generalSettings">
+      <MavenGeneralSettings>
+        <option name="mavenHomeTypeForPersistence" value="WRAPPER" />
+      </MavenGeneralSettings>
+    </option>
+  </component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "customColor": "",
+  "associatedIndex": 2
+}]]></component>
+  <component name="ProjectId" id="37BxkmmfVyyzvNdK17lcHy65A65" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Docker.docker-compose.yml.url-shortener: Compose Deployment.executor": "Run",
+    "Docker.docker-compose.yml: Compose Deployment.executor": "Run",
+    "JUnit.CliArgsTest.parse_shouldApplyDefaults_whenOptionalArgsMissing.executor": "Run",
+    "JUnit.CliArgsTest.parse_shouldFail_whenFileMissing.executor": "Run",
+    "JUnit.CliArgsTest.parse_shouldFail_whenTopNZeroOrNegative.executor": "Run",
+    "JUnit.CliArgsTest.parse_shouldParseAllArguments.executor": "Run",
+    "JUnit.LogAnalyzerTest.executor": "Run",
+    "JUnit.LogCliApplicationTest.executor": "Run",
+    "JUnit.LogCliApplicationTest.parse_shouldParseValidArgs.executor": "Run",
+    "JUnit.LogEntryTest.executor": "Run",
+    "JUnit.LogEntryTest.shouldSupportEqualityAndHashCode_NotEqual.executor": "Run",
+    "JUnit.LogParserTest.executor": "Run",
+    "JUnit.LogParserTest.parse_shouldFail_whenColumnsMissing.executor": "Run",
+    "JUnit.LogParserTest.parse_shouldFail_whenTimestampInvalid.executor": "Run",
+    "JUnit.LogParserTest.parse_shouldParseValidCsv.executor": "Run",
+    "JUnit.LogParserTest.parse_shouldReturnEmptyList_whenOnlyHeader.executor": "Run",
+    "JUnit.LogParserTest.parse_shouldThrowIOException_whenFileMissing.executor": "Run",
+    "JUnit.LogParserTest.parse_shouldThrowIllegalArgumentException_whenCsvLineHasLessThanFourColumns.executor": "Run",
+    "JUnit.URLShortenerControllerIT.create_shouldReturn404_BadRequest_BadUrlFormatting.executor": "Run",
+    "JUnit.URLShortenerControllerIT.executor": "Run",
+    "JUnit.URLShortenerControllerIT.redirect_should_404_code_not_exist.executor": "Run",
+    "JUnit.URLShortenerControllerRateLimitITTest.executor": "Run",
+    "JUnit.UrlCreateResponseTest.executor": "Run",
+    "JUnit.UrlMetaDataResponseTest.executor": "Run",
+    "Maven.log-cli [clean].executor": "Run",
+    "Maven.log-cli [package].executor": "Run",
+    "Maven.url-shortener [clean].executor": "Run",
+    "Maven.url-shortener [package].executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "main",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/USER/Documents/GitHub/url-shortener/log-cli"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\USER\Documents\GitHub\url-shortener\log-cli" />
+      <recent name="C:\Users\USER\Documents\GitHub\url-shortener" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\USER\Documents\GitHub\url-shortener\url-shortener" />
+      <recent name="C:\Users\USER\Documents\GitHub\url-shortener\log-cli" />
+      <recent name="C:\Users\USER\Documents\GitHub\url-shortener\app" />
+    </key>
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="com.example.url_shortener.Api" />
+    </key>
+  </component>
+  <component name="RunManager" selected="JUnit.CliArgsTest.parse_shouldFail_whenTopNZeroOrNegative">
+    <configuration name="CliArgsTest.parse_shouldApplyDefaults_whenOptionalArgsMissing" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="log-cli" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.example.logcli.Models.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.example.logcli.Models" />
+      <option name="MAIN_CLASS_NAME" value="com.example.logcli.Models.CliArgsTest" />
+      <option name="METHOD_NAME" value="parse_shouldApplyDefaults_whenOptionalArgsMissing" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="CliArgsTest.parse_shouldFail_whenFileMissing" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="log-cli" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.example.logcli.Models.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.example.logcli.Models" />
+      <option name="MAIN_CLASS_NAME" value="com.example.logcli.Models.CliArgsTest" />
+      <option name="METHOD_NAME" value="parse_shouldFail_whenFileMissing" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="CliArgsTest.parse_shouldFail_whenTopNZeroOrNegative" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="log-cli" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.example.logcli.Models.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.example.logcli.Models" />
+      <option name="MAIN_CLASS_NAME" value="com.example.logcli.Models.CliArgsTest" />
+      <option name="METHOD_NAME" value="parse_shouldFail_whenTopNZeroOrNegative" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="CliArgsTest.parse_shouldParseAllArguments" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="log-cli" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.example.logcli.Models.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.example.logcli.Models" />
+      <option name="MAIN_CLASS_NAME" value="com.example.logcli.Models.CliArgsTest" />
+      <option name="METHOD_NAME" value="parse_shouldParseAllArguments" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="UrlCreateResponseTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="url-shortener (1)" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.example.url_shortener.Models.Response.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.example.url_shortener.Models.Response" />
+      <option name="MAIN_CLASS_NAME" value="com.example.url_shortener.Models.Response.UrlCreateResponseTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="docker-deploy" factoryName="docker-compose.yml" temporary="true">
+      <deployment type="docker-compose.yml" />
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="JUnit.CliArgsTest.parse_shouldFail_whenTopNZeroOrNegative" />
+        <item itemvalue="JUnit.CliArgsTest.parse_shouldFail_whenFileMissing" />
+        <item itemvalue="JUnit.CliArgsTest.parse_shouldApplyDefaults_whenOptionalArgsMissing" />
+        <item itemvalue="JUnit.CliArgsTest.parse_shouldParseAllArguments" />
+        <item itemvalue="JUnit.UrlCreateResponseTest" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="f2882df7-c0f8-45c5-9552-abb3cb990bc3" name="Changes" comment="" />
+      <created>1766390412652</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1766390412652</updated>
+    </task>
+    <servers />
+  </component>
+</project>

@@ -1,0 +1,56 @@
+spring:
+  application:
+    name: url-shortener-test
+
+  datasource:
+    url: jdbc:h2:mem:testDb;DB_CLOSE_DELAY=-1
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+    hikari:
+      jdbc-url:  ${spring.datasource.url}
+      pool-name: url-shortener-pool
+      connection-timeout: 30000
+      pool-size: 10
+      idle-timeout: 30
+      max-lifetime: 1800000
+      username: ${spring.datasource.username}
+      password: ${spring.datasource.password}
+      leak-detection-threshold: 60000
+      minimum-idle: 10
+      schema: PUBLIC
+
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: false
+    database-platform: org.hibernate.dialect.H2Dialect
+
+  flyway:
+    enabled: false
+
+  data:
+    redis:
+      repositories:
+        enabled: false
+
+  cache:
+    type: none
+
+server:
+  port: 0
+
+app-config:
+  short-url:
+    expiry-minutes: 60
+    max-create-retry: 5
+  rate-limit-config:
+    limit-period-minutes: 1
+    limit-token: 4
+    limit-capacity: 4
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health

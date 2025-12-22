@@ -15,8 +15,10 @@ services:
     ports:
       - "6379:6379"
 
-  app:
-    build: .
+  url-shortener:
+    build:
+      context: .
+      dockerfile: url-shortener/Dockerfile
     depends_on:
       - postgres
       - redis
@@ -28,3 +30,11 @@ services:
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: root
       SPRING_DATA_REDIS_HOST: redis
+
+  log-cli:
+    build:
+      context: .
+      dockerfile: log-cli/Dockerfile
+#    volumes:
+#      - ./sample-data:/app/samples
+    entrypoint: ["java", "-jar", "app.jar"]
